@@ -16,6 +16,31 @@
             android:layout_centerHorizontal="true"
             android:text="Game"
             android:textSize="36sp" />
+
+        <Button
+            android:id="@+id/apple_tree"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/poem_river"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="apple tree" />
+
+        <Button
+            android:id="@+id/poem_river"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:text="poem river" />
+
+        <Button
+            android:id="@+id/poem_escape"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/apple_tree"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="poem escape" />
     </RelativeLayout>
 
     <LinearLayout

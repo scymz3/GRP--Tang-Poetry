@@ -38,6 +38,40 @@ public class gamePage extends AppCompatActivity {
             }
         });
 
+        /**
+         * goto apple_tree game
+         */
+        Button btn_apple_tree = (Button)findViewById(R.id.apple_tree);
+        btn_apple_tree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(gamePage.this,appleTree.class);
+                startActivity(intent);
+            }
+        });
 
+        /**
+         * goto poem_escape game
+         */
+        Button btn_poem_escape = (Button)findViewById(R.id.apple_tree);
+        btn_poem_escape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(gamePage.this,poemEscape.class);
+                startActivity(intent);
+            }
+        });
+
+        /**
+         * goto poem_river game
+         */
+        Button btn_poem_river = (Button)findViewById(R.id.apple_tree);
+        btn_poem_river.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(gamePage.this,poemRiver.class);
+                startActivity(intent);
+            }
+        });
     }
 }
