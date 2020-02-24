@@ -106,7 +106,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/explaination"
+                    android:id="@+id/explanation"
                     android:layout_width="394dp"
                     android:layout_height="match_parent"
                     android:gravity="bottom|center|left"

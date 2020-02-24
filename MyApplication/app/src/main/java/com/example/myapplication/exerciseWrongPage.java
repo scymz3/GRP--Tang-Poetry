@@ -3,7 +3,6 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import com.example.greendao.Question;
+
 import java.util.List;
 
 public class exerciseWrongPage extends AppCompatActivity {
@@ -86,7 +86,7 @@ public class exerciseWrongPage extends AppCompatActivity {
         radioButtons[0] = findViewById(R.id.answerA);
         radioButtons[1] = findViewById(R.id.answerB);
         radioButtons[2] = findViewById(R.id.answerC);
-        final TextView explaination = findViewById(R.id.explaination);
+        final TextView explaination = findViewById(R.id.explanation);
         Button btn_previous = findViewById(R.id.btn_previous);
         Button btn_next = findViewById(R.id.btn_next);
 
@@ -95,15 +95,15 @@ public class exerciseWrongPage extends AppCompatActivity {
         //base on review model to show specific question
         q = getQuestion(wrongList);
 
-        question.setText(q.question);
-        radioButtons[0].setText(q.answerA);
-        radioButtons[1].setText(q.answerB);
-        radioButtons[2].setText(q.answerC);
-        explaination.setText("\nExplaination:\n"+q.explaination);
+        question.setText(q.getQuestion());
+        radioButtons[0].setText(q.getAnswerA());
+        radioButtons[1].setText(q.getAnswerB());
+        radioButtons[2].setText(q.getAnswerC());
+        explaination.setText("\nExplaination:\n"+q.getExplanation());
 
         radioGroup.clearCheck();
-        if(q.selectedAnswer != -1){
-            radioButtons[q.selectedAnswer].setChecked(true);
+        if(q.getSelectedAnswer() != -1){
+            radioButtons[q.getSelectedAnswer()].setChecked(true);
         }
         getColor(radioButtons);
 
@@ -118,16 +118,16 @@ public class exerciseWrongPage extends AppCompatActivity {
                     //update question and options
                     q = getQuestion(wrongList);
                     questionNumber.setText(questionNum + "");
-                    question.setText(q.question);
-                    radioButtons[0].setText(q.answerA);
-                    radioButtons[1].setText(q.answerB);
-                    radioButtons[2].setText(q.answerC);
-                    explaination.setText("\nExplaination:\n"+q.explaination);
+                    question.setText(q.getQuestion());
+                    radioButtons[0].setText(q.getAnswerA());
+                    radioButtons[1].setText(q.getAnswerB());
+                    radioButtons[2].setText(q.getAnswerC());
+                    explaination.setText("\nExplanation:\n"+q.getExplanation());
 
                     //if the question was selected before, record the option
                     radioGroup.clearCheck();
-                    if(q.selectedAnswer != -1){
-                        radioButtons[q.selectedAnswer].setChecked(true);
+                    if(q.getSelectedAnswer() != -1){
+                        radioButtons[q.getSelectedAnswer()].setChecked(true);
                     }
                     getColor(radioButtons);
                 }
@@ -161,17 +161,17 @@ public class exerciseWrongPage extends AppCompatActivity {
                     current--;
                     q = getQuestion(wrongList);
                     questionNumber.setText(questionNum + "");
-                    question.setText(q.question);
-                    radioButtons[0].setText(q.answerA);
-                    radioButtons[1].setText(q.answerB);
-                    radioButtons[2].setText(q.answerC);
-                    explaination.setText("\nExplaination:\n"+q.explaination);
+                    question.setText(q.getQuestion());
+                    radioButtons[0].setText(q.getAnswerA());
+                    radioButtons[1].setText(q.getAnswerB());
+                    radioButtons[2].setText(q.getAnswerC());
+                    explaination.setText("\nExplanation:\n"+q.getExplanation());
 
 
                     //if the option has been chosen, record it
                     radioGroup.clearCheck();
-                    if (q.selectedAnswer != -1) {
-                        radioButtons[q.selectedAnswer].setChecked(true);
+                    if (q.getSelectedAnswer() != -1) {
+                        radioButtons[q.getSelectedAnswer()].setChecked(true);
                     }
                     getColor(radioButtons);
                 }
@@ -189,21 +189,6 @@ public class exerciseWrongPage extends AppCompatActivity {
 
             }
         });
-
-//        //update the choice of users
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-//                for (int i = 0; i < 3; i++) {
-//                    if (radioButtons[i].isChecked() == true) {
-//                        list.get(current).selectedAnswer = i;
-//                        //System.out.println("check    list.get(current).selectedAnswer "+list.get(current).selectedAnswer);
-//                        break;
-//                    }
-//                }
-//
-//            }
-//        });
 
     }
 
@@ -234,12 +219,12 @@ public class exerciseWrongPage extends AppCompatActivity {
         for(int i = 0; i < 3; i++){
             radioButtons[i].setTextColor(Color.BLACK);
         }
-        if(q.answer != q.selectedAnswer && q.selectedAnswer != -1){
-            radioButtons[q.selectedAnswer].setTextColor(android.graphics.Color.RED);
-            radioButtons[q.answer].setTextColor(android.graphics.Color.GREEN);
+        if(q.getAnswer() != q.getSelectedAnswer() && q.getSelectedAnswer() != -1){
+            radioButtons[q.getSelectedAnswer()].setTextColor(android.graphics.Color.RED);
+            radioButtons[q.getAnswer()].setTextColor(android.graphics.Color.GREEN);
 
         }else{
-            radioButtons[q.answer].setTextColor(android.graphics.Color.GREEN);
+            radioButtons[q.getAnswer()].setTextColor(android.graphics.Color.GREEN);
         }
     }
 
