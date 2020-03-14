@@ -4,6 +4,9 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Property;
 
+/**
+ * Exercise question entity
+ */
 @Entity
 public class Question {
     //@Id
@@ -20,11 +23,14 @@ public class Question {
     private int answer;
     @Property(nameInDb = "Explanation")
     private String explanation;
+    @Property(nameInDb = "Hint")
+    private String hint;
     //user select answer
     private int selectedAnswer;
-    @Generated(hash = 1353255202)
+    @Generated(hash = 739850926)
     public Question(int ID, String question, String answerA, String answerB,
-            String answerC, int answer, String explanation, int selectedAnswer) {
+            String answerC, int answer, String explanation, String hint,
+            int selectedAnswer) {
         this.ID = ID;
         this.question = question;
         this.answerA = answerA;
@@ -32,6 +38,7 @@ public class Question {
         this.answerC = answerC;
         this.answer = answer;
         this.explanation = explanation;
+        this.hint = hint;
         this.selectedAnswer = selectedAnswer;
     }
     @Generated(hash = 1868476517)
@@ -84,6 +91,12 @@ public class Question {
     }
     public void setSelectedAnswer(int selectedAnswer) {
         this.selectedAnswer = selectedAnswer;
+    }
+    public String getHint() {
+        return this.hint;
+    }
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
 }

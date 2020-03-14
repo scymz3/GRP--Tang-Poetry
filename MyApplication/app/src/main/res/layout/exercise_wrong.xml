@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -67,33 +68,45 @@
             android:text="Question"
             android:textSize="18sp" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="114dp"
-            android:gravity="center|center_horizontal|center_vertical">
+            android:layout_height="123dp">
 
-            <RadioButton
-                android:id="@+id/answerA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButtonA"
-                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/image_hint"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_gravity="right|top"
+                app:srcCompat="@drawable/exercise_pic20" />
 
-            <RadioButton
-                android:id="@+id/answerB"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButtonB"
-                android:textSize="18sp" />
+                android:layout_height="114dp"
+                android:gravity="center|center_horizontal|center_vertical">
 
-            <RadioButton
-                android:id="@+id/answerC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="RadioButtonC"
-                android:textSize="18sp" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/answerA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButtonA"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/answerB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButtonB"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/answerC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButtonC"
+                    android:textSize="18sp" />
+            </RadioGroup>
+        </FrameLayout>
 
         <ScrollView
             android:layout_width="match_parent"

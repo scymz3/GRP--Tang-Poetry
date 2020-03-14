@@ -26,7 +26,7 @@ public class PoemList extends Application {
     }
 
     private void setDatabase() {
-        mHelper = new DaoMaster.DevOpenHelper(this,"Poem",null);
+        mHelper = new DaoMaster.DevOpenHelper(this,"Poem.db",null);
         db = mHelper.getWritableDatabase();
         // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);

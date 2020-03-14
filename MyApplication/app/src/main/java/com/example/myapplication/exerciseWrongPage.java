@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,14 +18,29 @@ import com.example.greendao.Question;
 
 import java.util.List;
 
+/**
+ * Display review question model.
+ */
 public class exerciseWrongPage extends AppCompatActivity {
 
     private int count; //the number of exercise questions
     private int current; //the question that is working on
     private int questionNum; //the serial number of question
     private static List<Question> list; //the question list
+    private static List<Integer> wrongList;
     private Question q;
+    private exercisePage exercisepage;
+
     private Button btn_changeModel;
+    private TextView questionNumber;
+    private TextView question;
+    private Button btn_hint;
+    private RadioGroup radioGroup;
+    private RadioButton[] radioButtons;
+    private TextView explaination;
+    private Button btn_previous;
+    private Button btn_next;
+    private ImageView image_hint; //the image of hint
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +60,8 @@ public class exerciseWrongPage extends AppCompatActivity {
         });
 
         /**
-         * goto finish page
+         * Change the model of review questions
+         * 0 represents view all questions; 1 represents just view wrong questions
          */
         btn_changeModel = (Button) findViewById(R.id.changeModel);
         btn_changeModel.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +79,10 @@ public class exerciseWrongPage extends AppCompatActivity {
             }
         });
 
-        exercisePage exercisepage = new exercisePage();
+        //get the whole question list and wrong question list
+        exercisepage = new exercisePage();
         list = exercisepage.getlist(); //get the question list
-        final List<Integer> wrongList = exercisepage.checkAnswer(list);
+        wrongList = exercisepage.checkAnswer(list);
         if(exerciseResultPage.reviewMode == 0){
             btn_changeModel.setText("REVIEW ALL QUESTIONS");
             count = wrongList.size();
@@ -73,39 +91,29 @@ public class exerciseWrongPage extends AppCompatActivity {
             count = list.size();
         }
 
-        current = 0;
-        questionNum = 1;
+        current = 0; //represents current question ID
+        questionNum = 1; //represents question number
 
         /**
-         * Set the content of question and options
+         * Initialize controls
          */
-        final TextView questionNumber = findViewById(R.id.noQuestion);
-        final TextView question = findViewById(R.id.question);
-        final RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        final RadioButton[] radioButtons = new RadioButton[3];
+        questionNumber = findViewById(R.id.noQuestion);
+        btn_hint = findViewById(R.id.btn_hint);
+        question = findViewById(R.id.question);
+        radioGroup = findViewById(R.id.radioGroup);
+        radioButtons = new RadioButton[3];
         radioButtons[0] = findViewById(R.id.answerA);
         radioButtons[1] = findViewById(R.id.answerB);
         radioButtons[2] = findViewById(R.id.answerC);
-        final TextView explaination = findViewById(R.id.explanation);
-        Button btn_previous = findViewById(R.id.btn_previous);
-        Button btn_next = findViewById(R.id.btn_next);
+        explaination = findViewById(R.id.explanation);
+        btn_previous = findViewById(R.id.btn_previous);
+        btn_next = findViewById(R.id.btn_next);
+        image_hint = findViewById(R.id.image_hint);
 
-        //assigns a value to the control
-        questionNumber.setText(questionNum + "");
-        //base on review model to show specific question
-        q = getQuestion(wrongList);
-
-        question.setText(q.getQuestion());
-        radioButtons[0].setText(q.getAnswerA());
-        radioButtons[1].setText(q.getAnswerB());
-        radioButtons[2].setText(q.getAnswerC());
-        explaination.setText("\nExplaination:\n"+q.getExplanation());
-
-        radioGroup.clearCheck();
-        if(q.getSelectedAnswer() != -1){
-            radioButtons[q.getSelectedAnswer()].setChecked(true);
-        }
-        getColor(radioButtons);
+        //set the first question content
+        setContent();
+        //display option state
+        checkOption();
 
         //jump to next question
         btn_next.setOnClickListener(new View.OnClickListener(){
@@ -113,23 +121,11 @@ public class exerciseWrongPage extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 if(current < count -1){
+                    //set next question content
                     questionNum++;
                     current++;
-                    //update question and options
-                    q = getQuestion(wrongList);
-                    questionNumber.setText(questionNum + "");
-                    question.setText(q.getQuestion());
-                    radioButtons[0].setText(q.getAnswerA());
-                    radioButtons[1].setText(q.getAnswerB());
-                    radioButtons[2].setText(q.getAnswerC());
-                    explaination.setText("\nExplanation:\n"+q.getExplanation());
-
-                    //if the question was selected before, record the option
-                    radioGroup.clearCheck();
-                    if(q.getSelectedAnswer() != -1){
-                        radioButtons[q.getSelectedAnswer()].setChecked(true);
-                    }
-                    getColor(radioButtons);
+                    setContent();
+                    checkOption();
                 }
                 else{
                     new AlertDialog.Builder(exerciseWrongPage.this)
@@ -140,7 +136,6 @@ public class exerciseWrongPage extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(exerciseWrongPage.this, exerciseResultPage.class);
                                     startActivity(intent);
-//                                    exercisePage.this.finish();
                                 }
                             })
                             .setNegativeButton("Cancel",null)
@@ -157,23 +152,11 @@ public class exerciseWrongPage extends AppCompatActivity {
                 //if the question is not the first question, go to previous one; otherwise, do not change
                 if (current > 0)
                 {
+                    //set previous question content
                     questionNum--;
                     current--;
-                    q = getQuestion(wrongList);
-                    questionNumber.setText(questionNum + "");
-                    question.setText(q.getQuestion());
-                    radioButtons[0].setText(q.getAnswerA());
-                    radioButtons[1].setText(q.getAnswerB());
-                    radioButtons[2].setText(q.getAnswerC());
-                    explaination.setText("\nExplanation:\n"+q.getExplanation());
-
-
-                    //if the option has been chosen, record it
-                    radioGroup.clearCheck();
-                    if (q.getSelectedAnswer() != -1) {
-                        radioButtons[q.getSelectedAnswer()].setChecked(true);
-                    }
-                    getColor(radioButtons);
+                    setContent();
+                    checkOption();
                 }
                 else{
                     new AlertDialog.Builder(exerciseWrongPage.this)
@@ -193,21 +176,85 @@ public class exerciseWrongPage extends AppCompatActivity {
     }
 
     /**
-     * If the model is review wrong questions, only wrong questions are shown.
+     * If the option has been chosen, record it
+     */
+    private void checkOption(){
+        radioGroup.clearCheck();
+        if(q.getSelectedAnswer() != -1){
+            radioButtons[q.getSelectedAnswer()].setChecked(true);
+        }
+        getColor(radioButtons);
+    }
+
+
+    /**
+     * If the model is review wrong questions, only wrong questions are shown;
      * If the model is review all the questions, all the questions are shown.
      *
-     * @param wrongList
-     * @return
+     * @return q - current question
      */
-    public Question getQuestion(List<Integer> wrongList){
+    public Question getQuestion(){
         Question q;
         if(exerciseResultPage.reviewMode == 0){
             q = list.get(wrongList.get(current));
         }else{
             q = list.get(current);
         }
-
         return q;
+    }
+
+    /**
+     * Set the content of question and options
+     */
+    private void setContent(){
+        q = getQuestion();
+        //assigns a value to the control
+        questionNumber.setText(questionNum + "");
+        String[] strArrQ = q.getQuestion().split("\\*");
+        question.setText(strArrQ[0]+"\n"+strArrQ[1]);
+        radioButtons[0].setText(q.getAnswerA());
+        radioButtons[1].setText(q.getAnswerB());
+        radioButtons[2].setText(q.getAnswerC());
+        String[] strArr = q.getExplanation().split("\\*");
+        explaination.setText("\nExplaination:\n"+strArr[0]+"\n"+strArr[1]+"\n\n"+strArr[2]+"\n"+strArr[3]+"\n"+strArr[4]+"\n\n"+strArr[5]+"\n"+strArr[6]+"\n"+strArr[7]+"\n"+strArr[8]+"\n");
+        image_hint.setVisibility(View.INVISIBLE);
+        showPicture();
+    }
+
+    /**
+     * Display hint picture.
+     */
+    public void showPicture(){
+        switch (q.getID()){
+            case 20:
+                image_hint.setImageResource(R.drawable.exercise_pic20);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 21:
+                image_hint.setImageResource(R.drawable.exercise_pic21);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 22:
+                image_hint.setImageResource(R.drawable.exercise_pic22);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 24:
+                image_hint.setImageResource(R.drawable.exercise_pic24);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 27:
+                image_hint.setImageResource(R.drawable.exercise_pic27);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 30:
+                image_hint.setImageResource(R.drawable.exercise_pic30);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+            case 31:
+                image_hint.setImageResource(R.drawable.exercise_pic30);
+                image_hint.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     /**
@@ -222,7 +269,6 @@ public class exerciseWrongPage extends AppCompatActivity {
         if(q.getAnswer() != q.getSelectedAnswer() && q.getSelectedAnswer() != -1){
             radioButtons[q.getSelectedAnswer()].setTextColor(android.graphics.Color.RED);
             radioButtons[q.getAnswer()].setTextColor(android.graphics.Color.GREEN);
-
         }else{
             radioButtons[q.getAnswer()].setTextColor(android.graphics.Color.GREEN);
         }

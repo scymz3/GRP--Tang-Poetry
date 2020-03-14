@@ -28,11 +28,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.jakewharton:butterknife:8.6.0'
 }
 
 greendao {
-    schemaVersion 1
+    schemaVersion 2
     daoPackage 'com.example.greendao'// 设置DaoMaster、DaoSession、Dao   一般包名+文件夹名
 }

@@ -12,6 +12,11 @@ import com.example.greendao.Question;
 
 import java.util.List;
 
+/**
+ * Display the number of wrong questions and currency of exercise;
+ * Users can review all the questions and wrong questions;
+ * Users can restart the exercise.
+ */
 public class exerciseResultPage extends AppCompatActivity {
 
     private int count; //the number of exercise questions
@@ -29,9 +34,9 @@ public class exerciseResultPage extends AppCompatActivity {
 
         //calculate accuracy
         exercisePage exercisepage = new exercisePage();
-        list = exercisepage.getlist(); //get the question list from database
+        list = exercisepage.getlist(); //get the question list
         count = list.size();
-        //the last question
+
         //told user the number of correct answer and wrong answer
         final List<Integer> wrongList = exercisepage.checkAnswer(list);
         if(wrongList.size()==0){

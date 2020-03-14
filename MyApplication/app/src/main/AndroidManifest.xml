@@ -60,6 +60,12 @@
         <activity android:name=".exerciseWrongPage">
 
         </activity>
+        <activity android:name=".gameStoryPage">
+
+        </activity>
+        <activity android:name=".gameStoryResultPage">
+
+        </activity>
     </application>
 
 </manifest>
